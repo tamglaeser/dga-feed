@@ -1,0 +1,3 @@
+ijjnehxchgde.com,198.54.117.197|198.54.117.198|198.54.117.199|198.54.117.200,dns101.registrar-servers.com|dns102.registrar-servers.com,198.54.117.253|198.54.117.254,Master Indicator Feed for tinba non-sinkholed domains,http://osint.bambenekconsulting.com/manual/tinba.txt
+ivaserivaseeer.biz,198.54.117.197|198.54.117.198|198.54.117.199|198.54.117.200,dns101.registrar-servers.com|dns102.registrar-servers.com,198.54.117.253|198.54.117.254,Master Indicator Feed for tinba non-sinkholed domains,http://osint.bambenekconsulting.com/manual/tinba.txt
+qjjimexstebt.com,91.195.240.13,a.ns36.de|b.ns36.de,91.195.240.7|91.195.241.7,Master Indicator Feed for tinba non-sinkholed domains,http://osint.bambenekconsulting.com/manual/tinba.txt

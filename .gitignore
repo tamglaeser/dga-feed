@@ -1,0 +1,7 @@
+#Editors
+.idea/
+
+*.iml
+
+#Vi files
+*~
