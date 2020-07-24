@@ -40,7 +40,7 @@ for line in lines:
                 decoded_line = ln.decode("utf-8")
                 if decoded_line[0]  != '#' and after == 0:
                     after = 1
-                    f = open(name + ".txt", "w") # overwrites if file/content already exists
+                    f = open("output/" + name + ".txt", "w") # overwrites if file/content already exists
                 if after == 1 and decoded_line[0] != '#': #while data
 
                     f.write(decoded_line)

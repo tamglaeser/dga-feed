@@ -7,7 +7,7 @@ complete = []
 domain = ip = description = manpage = ""
 ns_host = ns_ip = []
 
-f = open("suppobox.txt", "w") # overwrites if file/content already exists
+f = open("output/suppobox.txt", "w") # overwrites if file/content already exists
 for line in file:
     decoded_line = line.decode("utf-8")
     f.write(decoded_line)

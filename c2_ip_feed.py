@@ -8,7 +8,7 @@ description = []
 date = []
 manpage = []
 
-f = open("C&C_IP_addresses.txt", "w") # overwrites if file/content already exists
+f = open("output/c2_ip_feed.txt", "w") # overwrites if file/content already exists
 for line in file:
     decoded_line = line.decode("utf-8")
     f.write(decoded_line)
