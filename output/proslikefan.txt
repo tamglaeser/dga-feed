@@ -1,1 +1,0 @@
-bzcyhy.com,45.35.180.246,ns1.dnsdun.com|ns1.dnsdun.net|ns5.dnsdun.com,59.53.63.3|114.215.202.12|118.190.22.142|118.190.24.151|122.228.80.247|172.247.254.218|172.247.255.182|172.247.255.187,Master Indicator Feed for proslikefan non-sinkholed domains,http://osint.bambenekconsulting.com/manual/proslikefan.txt

@@ -1,3 +1,0 @@
-eixftbirnjxm.online,198.54.117.197|198.54.117.198|198.54.117.199|198.54.117.200,,,Master Indicator Feed for mirai non-sinkholed domains,http://osint.bambenekconsulting.com/manual/mirai.txt
-rvuxfyxxutux.tech,198.54.117.197|198.54.117.198|198.54.117.199|198.54.117.200,dns101.registrar-servers.com|dns102.registrar-servers.com,198.54.117.253|198.54.117.254,Master Indicator Feed for mirai non-sinkholed domains,http://osint.bambenekconsulting.com/manual/mirai.txt
-yrodbapnthrp.support,198.54.117.197|198.54.117.198|198.54.117.199|198.54.117.200,dns101.registrar-servers.com|dns102.registrar-servers.com,198.54.117.253|198.54.117.254,Master Indicator Feed for mirai non-sinkholed domains,http://osint.bambenekconsulting.com/manual/mirai.txt
