@@ -1,0 +1,24 @@
+Master Feed of known, active and non-sinkholed C&Cs indicators -- HIGH CONFIDENCE FAMILIES ONLY
+Master list feed of all current C&C domains using DGAs
+
+$domain,$ip,$nsname,$nsip,$description,$manpage
+
+(FP Risk -- False Positive Risk -- if high = useless)
+
+Why that feed? What did you find interesting about the information you pulled out?
+
+Of all the feeds, the High-Confidence C2 All Indicator Feed seemed to have referenced the highest
+number of family-specific feeds and have all the important information about them as well. It still
+had some family-specific feeds missing (Banjori, Matsnu, Nymaim, Pixd, Pykspa, 9 from Ramnit, Simda, Suppobox, Virut)
+and had an extra domain from Tinba, however I expect that this is simply due to it not being completely
+up-to-date/synced. I also thought this feed would be helpful since it contains all the current C&C domains using DGAs which one could easily block.
+
+I specifically pulled out the C&C domain names in the only_domain() function so that these could all be added to a blacklist and blocked.
+
+In the domain_nsips() function, I pulled out the C&C domains and the name server ips so that one could see if the DNS had requests for those domains
+could thereby locate the malware and let the owner of the computer know their computer had a virus OR see who registered that domain name thereby finding
+the attacker.
+
+http://go.cybereason.com/rs/996-YZT-709/images/eBook_Detecting-the-Unknown-Protecting-Against-DGA-Based-Malware.pdf?mkt_tok=eyJpIjoiWmpJMU5qYzRNekZoWlRBNSIsInQiOiJmVXVLZ29HeDFsam1NYTE2M1IwMUJvdHlvTHg1cGVQd0t5SW9SbWJrQndydXhkc3RpVHczQUc1SWg5aTFlRXFnd2RESDIxUit5NUluaEEzQndpMytxbFJOaExTVGkwMkR1N0VpWnVIZGdHT1I2MFE1YjAxc0ZIVVwvTUduK3I4T0kifQ%3D%3D
+https://hackersterminal.com/domain-generation-algorithm-dga-in-malware/
+https://blog.trendmicro.com/domain-generating-algorithms-dgas/
