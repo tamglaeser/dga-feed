@@ -27,3 +27,8 @@ $ cd ./threatquotient
 ```
 $ python3 c2_all_indicator.py
 ``` 
+
+#### Motivation
+
+Please see [here](./motivation.md) for more on my motivation, why I picked the particular intel feed from Bambenek Consulting, and what applications this program
+could have.
