@@ -121,6 +121,7 @@ def main():
             ans = False
         else:
             print("\n Not Valid Choice, try again")
+            ans = True  # otherwise exits program with Enter key
 
 
 if __name__ == '__main__':
