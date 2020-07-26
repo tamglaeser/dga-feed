@@ -44,11 +44,9 @@ def get_info(ip):
     print(complete[ip])
 
 
-# main
-complete = {}  # dictionary containing all information on page
-
-
 def main():
+    global complete
+    complete = {}  # dictionary containing all information on page
     url = "https://osint.bambenekconsulting.com/feeds/c2-masterlist-high.txt"  # data page
 
     try:
@@ -65,7 +63,7 @@ def main():
     for line in file:
         decoded_line = line.decode("utf-8")
 
-        if decoded_line[0] != '#':  # if past the beggining comments
+        if decoded_line[0] != '#':  # if past the beginning comments
             parts = decoded_line.split(',')
 
             if parts[1] not in complete.keys():  # if ip not already in dictionary, add
