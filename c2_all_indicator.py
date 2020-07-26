@@ -6,20 +6,20 @@ from urllib.error import HTTPError, URLError
 # dictionary format: {ip: [domain, [nsnames], [nsips], description, manpage]
 def pull():
 
-    print(complete)
+    print("Format: (ip, [domain, nsdomains, nsips, description, manpage])")
+    print(*complete.items(), sep='\n')
 
 
 # function to pull out only all the C&C domains using DGAs
 # -- could be used to to block them / put them on a blacklist
 def only_domain():
 
-    dms = []  # array to be filled w all the C&C domains on the page
+    dms = []  # array to be filled w all the C&C domains on the page  # for memory
 
     for val in complete.values():
         for each in val:  # for each value for that key
+            print(each[0])  # for nice output formatting
             dms.append(each[0])
-
-    print(dms)
 
 
 # function to pull out C&C domains and name server ips
@@ -29,13 +29,13 @@ def only_domain():
 # look at outed log to see who registered the C&C domain (which ip -- cld be ip of attacker)
 def domains_nsips():
 
-    together = {}  # dictionary containing key C&C domain and value ns ips
+    together = {}  # dictionary containing key C&C domain and value ns ips  # for memory
 
     for val in complete.values():
         for each in val:  # for each value for that key
             together[each[0]] = each[2]  # key = each[0] = C&C domain  # value = each[2] = ns ips for that domain
+            print(each[0], each[2])
 
-    print(together)
 
 
 # function to list all info of certain C&C server ips
@@ -49,7 +49,7 @@ def get_fam(fam):
     if fam.lower() in dga.keys():
         print(dga[fam.lower()])
     else:
-        print("DGA family not found")
+        print("DGA family not found. See option 6 to list all DGA families.")
 
 
 def main():
@@ -88,12 +88,13 @@ def main():
 
     while ans:
         print("""
-        1.List all information on active and non-sinkholed C&C domains using DGAs
+        1.List all information on active and non-sinkholed C&C domains using DGAs. Presented in the following format: (ip, [domain, nsnames, nsips, description, manpage])
         2.List only the domains of active and non-sinkholed C&C domains using DGAS -- to block or blacklist
-        3.List the domains of active and non-sinkholed C&C domains using DGAs AND autoritative DNS names for the given DGA domain -- to find malware and attacker
+        3.List the domains of active and non-sinkholed C&C domains using DGAs AND the autoritative DNS names for the given DGA domain -- to find malware and attacker
         4.List information of specific C&C IP.
-        5.List all information on active non sinkholed C&C domains of specific DGA fam.
-        6.Exit/Quit
+        5.List all information on active non sinkholed C&C domains of specific DGA family.
+        6.List all DGA families.
+        7.Exit/Quit
         """)
 
         ans = input("What would you like to do? ")
@@ -108,12 +109,14 @@ def main():
             if ip in complete.keys():
                 get_info(ip)
             else:
-                print("IP key not found.")
+                print("IP address "+ ip +" not found.")
         elif ans == "5":
             fam = input("Which DGA family? ")
             get_fam(fam)
-
         elif ans == "6":
+            for key in dga.keys():
+                print(key)
+        elif ans == "7" or ans == "quit" or ans == "exit":
             print("\n Goodbye")
             ans = False
         else:
