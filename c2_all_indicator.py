@@ -44,9 +44,19 @@ def get_info(ip):
     print(complete[ip])
 
 
+# function to list all info of all active non-sinkholed C&C servers of certain DGA family
+def get_fam(fam):
+    if fam.lower() in dga.keys():
+        print(dga[fam.lower()])
+    else:
+        print("DGA family not found")
+
+
 def main():
     global complete
-    complete = {}  # dictionary containing all information on page
+    complete = {}  # dictionary containing all information on page  # key=ip
+    global dga
+    dga = {}  # dictionary containing all information on page organized by dga fam
     url = "https://osint.bambenekconsulting.com/feeds/c2-masterlist-high.txt"  # data page
 
     try:
@@ -70,6 +80,12 @@ def main():
                 complete[parts[1]] = [[parts[0], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]]]  # complete[ip] = [domain, ns_host, ns_ip, description, manpage] # dictionary
             else:  # if ip already in dictionary, append new values
                 complete[parts[1]].append([parts[0], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]])
+
+            name = parts[5].split('/')[4].split('.')[0]
+            if name not in dga.keys():
+                dga[name] = [[parts[0], parts[1], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]]]
+            else:
+                dga[name].append([[parts[0], parts[1], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]]])
     ans = True
 
     while ans:
@@ -78,7 +94,8 @@ def main():
         2.List only the domains of active and non-sinkholed C&C domains using DGAS -- to block or blacklist
         3.List the domains of active and non-sinkholed C&C domains using DGAs AND autoritative DNS names for the given DGA domain -- to find malware and attacker
         4.List information of specific C&C IP.
-        5.Exit/Quit
+        5.List all information on active non sinkholed C&C domains of specific DGA fam.
+        6.Exit/Quit
         """)
 
         ans = input("What would you like to do? ")
@@ -90,11 +107,15 @@ def main():
             domains_nsips()
         elif ans == "4":
             ip = input("Which IP? ")
-            if ip in complete:
+            if ip in complete.keys():
                 get_info(ip)
             else:
                 print("IP key not found.")
         elif ans == "5":
+            fam = input("Which DGA family? ")
+            get_fam(fam)
+
+        elif ans == "6":
             print("\n Goodbye")
             ans = False
         else:
