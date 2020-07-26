@@ -1,5 +1,5 @@
 import urllib.request
-
+from urllib.error import HTTPError, URLError
 
 # function to pull out all the information on the C&C domains using DGAs
 # $domain, $ip, $nsname, $nsip, $description, $manpage
@@ -42,7 +42,17 @@ complete = []  # array containing all information on page
 
 def main():
     url = "https://osint.bambenekconsulting.com/feeds/c2-masterlist-high.txt"  # data page
-    file = urllib.request.urlopen(url)
+
+    try:
+        file = urllib.request.urlopen(url)
+    except HTTPError as e:
+        print('The server couldn\'t fulfill the request. URL might be wrong / not exist anymore')
+        print('Error code: ', e.code)
+        return
+    except URLError as e:
+        print('Cannot reach the server. May have lost access to the Internet')
+        print('Reason: ', e.reason)
+        return
 
     for line in file:
         decoded_line = line.decode("utf-8")
@@ -63,9 +73,9 @@ def main():
 
     while ans:
         print("""
-        1.Pull all information on active and non-sinkholed C&C domains using DGAs
-        2.Pull only domains of active and non-sinkholed C&C domains using DGAS -- to block
-        3.Pull domains of active and non-sinkholed C&C domains using DGAs and autoritative DNS names for the given DGA domain -- to find malware and attacker
+        1.List all information on active and non-sinkholed C&C domains using DGAs
+        2.List only the domains of active and non-sinkholed C&C domains using DGAS -- to block or blacklist
+        3.List the domains of active and non-sinkholed C&C domains using DGAs AND autoritative DNS names for the given DGA domain -- to find malware and attacker
         4.Exit/Quit
         """)
 
