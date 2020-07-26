@@ -37,17 +37,17 @@ def domains_nsips():
             print(each[0], each[2])
 
 
-
 # function to list all info of certain C&C server ips
 # to block all domains on specific C&C server
 def get_info(ip):
-    print(complete[ip])
+    print("Format: [domain, nsdomains, nsips, description, manpage]")
+    print(*complete[ip], sep='\n')
 
 
 # function to list all info of all active non-sinkholed C&C servers of certain DGA family
 def get_fam(fam):
     if fam.lower() in dga.keys():
-        print(dga[fam.lower()])
+        print(*dga[fam.lower()], sep="\n")
     else:
         print("DGA family not found. See option 6 to list all DGA families.")
 
