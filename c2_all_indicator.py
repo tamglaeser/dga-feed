@@ -1,8 +1,9 @@
 import urllib.request
 from urllib.error import HTTPError, URLError
 
-# function to pull out all the information on the C&C domains using DGAs
-# $domain, $ip, $nsname, $nsip, $description, $manpage
+
+# function to list out all the information on the C&C servers using DGAs
+# dictionary format: {ip: [domain, [nsnames], [nsips], description, manpage]
 def pull():
 
     print(complete)
@@ -14,8 +15,9 @@ def only_domain():
 
     dms = []  # array to be filled w all the C&C domains on the page
 
-    for line in complete:
-        dms.append(line[0])
+    for val in complete.values():
+        for each in val:  # for each value for that key
+            dms.append(each[0])
 
     print(dms)
 
@@ -27,17 +29,23 @@ def only_domain():
 # look at outed log to see who registered the C&C domain (which ip -- cld be ip of attacker)
 def domains_nsips():
 
-    together = []  # array containing all pairs (C&C domain, nsips)
+    together = {}  # dictionary containing key C&C domain and value ns ips
 
-    for line in complete:
-        dm_nsips = [line[0], line[3]]  # [C&C domain, nsips] array
-        together.append(dm_nsips)
+    for val in complete.values():
+        for each in val:  # for each value for that key
+            together[each[0]] = each[2]  # key = each[0] = C&C domain  # value = each[2] = ns ips for that domain
 
     print(together)
 
 
+# function to list all info of certain C&C server ips
+# to block all domains on specific C&C server
+def get_info(ip):
+    print(complete[ip])
+
+
 # main
-complete = []  # array containing all information on page
+complete = {}  # dictionary containing all information on page
 
 
 def main():
@@ -60,15 +68,10 @@ def main():
         if decoded_line[0] != '#':  # if past the beggining comments
             parts = decoded_line.split(',')
 
-            domain = parts[0]
-            ip = parts[1]
-            ns_host = parts[2].split('|')
-            ns_ip = parts[3].split('|')
-            description = parts[4]
-            manpage = parts[5]
-
-            each = [domain, ip, ns_host, ns_ip, description, manpage]  # array for each line of info
-            complete.append(each)
+            if parts[1] not in complete.keys():  # if ip not already in dictionary, add
+                complete[parts[1]] = [[parts[0], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]]]  # complete[ip] = [domain, ns_host, ns_ip, description, manpage] # dictionary
+            else:  # if ip already in dictionary, append new values
+                complete[parts[1]].append([parts[0], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]])
     ans = True
 
     while ans:
@@ -76,7 +79,8 @@ def main():
         1.List all information on active and non-sinkholed C&C domains using DGAs
         2.List only the domains of active and non-sinkholed C&C domains using DGAS -- to block or blacklist
         3.List the domains of active and non-sinkholed C&C domains using DGAs AND autoritative DNS names for the given DGA domain -- to find malware and attacker
-        4.Exit/Quit
+        4.List information of specific C&C IP.
+        5.Exit/Quit
         """)
 
         ans = input("What would you like to do? ")
@@ -87,6 +91,12 @@ def main():
         elif ans == "3":
             domains_nsips()
         elif ans == "4":
+            ip = input("Which IP? ")
+            if ip in complete:
+                get_info(ip)
+            else:
+                print("IP key not found.")
+        elif ans == "5":
             print("\n Goodbye")
             ans = False
         else:
