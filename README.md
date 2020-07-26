@@ -19,8 +19,8 @@ This project requires Python 3.
 #### Get the Sources
 
 ```
-$ git clone https://github.com/tamglaeser/threatquotient.git
-$ cd ./threatquotient
+$ git clone https://github.com/tamglaeser/dga-feed.git
+$ cd ./dga-feed
 ```
 
 #### Run Program 
