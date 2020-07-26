@@ -64,11 +64,9 @@ def main():
     except HTTPError as e:
         print('The server couldn\'t fulfill the request. URL might be wrong / not exist anymore')
         print('Error code: ', e.code)
-        return
     except URLError as e:
         print('Cannot reach the server. May have lost access to the Internet')
         print('Reason: ', e.reason)
-        return
 
     for line in file:
         decoded_line = line.decode("utf-8")
