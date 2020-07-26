@@ -8,6 +8,6 @@ up-to-date/synced. I also thought this feed would be helpful since it contains a
 
 I specifically pulled out the C&C domain names in the [only_domain()](./c2_all_indicator.py#L13) function so that these could all be added to a blacklist and blocked.
 
-In the [domain_nsips()](./c2_all_indicator.py#L28) function, I pulled out the C&C domains and the name server ips so that one could see if the DNS had requests for those domains and
+In the [domains_nsips()](./c2_all_indicator.py#L28) function, I pulled out the C&C domains and the name server ips so that one could see if the DNS had requests for those domains and
 could thereby locate the malware and let the owner of the computer know their computer has a virus OR see who registered that domain name thereby finding
 the attacker.
