@@ -79,13 +79,13 @@ def main():
             else:  # if ip already in dictionary, append new values
                 complete[parts[1]].append([parts[0], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]])
 
-            name = parts[5].split('/')[4].split('.')[0]
+            name = parts[5].split('/')[4].split('.')[0]  # get name of DGA family
             if name not in dga.keys():
                 dga[name] = [[parts[0], parts[1], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]]]
             else:
                 dga[name].append([[parts[0], parts[1], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]]])
+                
     ans = True
-
     while ans:
         print("""
         1.List all information on active and non-sinkholed C&C domains using DGAs. Presented in the following format: (ip, [domain, nsnames, nsips, description, manpage])
@@ -124,5 +124,5 @@ def main():
             ans = True  # otherwise exits program with Enter key
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # to easily run main from terminal
     main()
