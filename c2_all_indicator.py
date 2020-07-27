@@ -65,7 +65,7 @@ def main():
         print('The server couldn\'t fulfill the request. URL might be wrong / not exist anymore')
         print('Error code: ', e.code)
     except URLError as e:
-        print('Cannot reach the server. May have lost access to the Internet')
+        print('Cannot reach the server. May have lost internet connection')
         print('Reason: ', e.reason)
 
     for line in file:
