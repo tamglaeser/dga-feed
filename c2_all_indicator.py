@@ -49,7 +49,23 @@ def get_fam(fam):
     if fam.lower() in dga.keys():
         print(*dga[fam.lower()], sep="\n")
     else:
-        print("DGA family not found. See option 6 to list all DGA families.")
+        print("DGA family not found. See option 5 to list all DGA families.")
+
+
+def fam_domains(fam):
+    if fam.lower() in dga.keys():
+        for each in dga[fam.lower()]:
+            print(each[0], sep="\n")
+    else:
+        print("DGA family not found. See option 5 to list all DGA families.")
+
+
+def fam_dom_nsip(fam):
+    if fam.lower() in dga.keys():
+        for each in dga[fam.lower()]:
+            print(each[0], each[3])
+    else:
+        print("DGA family not found. See option 5 to list all DGA families.")
 
 
 def main():
@@ -74,7 +90,14 @@ def main():
         if decoded_line[0] != '#':  # if past the beginning comments
             parts = decoded_line.split(',')
 
-            if parts[1] not in complete.keys():  # if ip not already in dictionary, add
+            if '|' in parts[1]:  # if has multiple C&C IPs
+                for x in parts[1].split('|'):
+                    if x not in complete.keys():
+                        complete[x] = [[parts[0], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]]]  # complete[ip] = [domain, ns_host, ns_ip, description, manpage] # dictionary
+                    else:  # if ip already in dictionary, append new values
+                        complete[x].append([parts[0], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]])
+
+            elif parts[1] not in complete.keys():  # if ip not already in dictionary, add
                 complete[parts[1]] = [[parts[0], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]]]  # complete[ip] = [domain, ns_host, ns_ip, description, manpage] # dictionary
             else:  # if ip already in dictionary, append new values
                 complete[parts[1]].append([parts[0], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]])
@@ -83,18 +106,20 @@ def main():
             if name not in dga.keys():
                 dga[name] = [[parts[0], parts[1], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]]]
             else:
-                dga[name].append([[parts[0], parts[1], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]]])
+                dga[name].append([parts[0], parts[1], parts[2].split('|'), parts[3].split('|'), parts[4], parts[5]])
                 
     ans = True
     while ans:
-        print("""
+        print("""     
         1.List all information on active and non-sinkholed C&C domains using DGAs. Presented in the following format: (ip, [domain, nsnames, nsips, description, manpage])
-        2.List only the domains of active and non-sinkholed C&C domains using DGAS -- to block or blacklist
-        3.List the domains of active and non-sinkholed C&C domains using DGAs AND the autoritative DNS names for the given DGA domain -- to find malware and attacker
+        2.List only the domains of active and non-sinkholed C&C servers using DGAs -- to block or blacklist
+        3.List the domains of active and non-sinkholed C&C servers using DGAs AND their autoritative DNS names -- to find malware and attacker
         4.List information of specific C&C IP.
-        5.List all information on active non sinkholed C&C domains of specific DGA family.
-        6.List all DGA families.
-        7.Exit/Quit
+        5.List all DGA families.
+        6.List all information on active, non-sinkholed C&C domains of a specific DGA family.
+        7.List only the domains of active, non-sinkholed C&C servers for a specific DGA family.
+        8.For a certain DGA family, list the domains of active, non-sinkholed C&C servers AND their autoritative DNS names
+        9.Exit/Quit
         """)
 
         ans = input("What would you like to do? ")
@@ -111,12 +136,18 @@ def main():
             else:
                 print("IP address "+ ip +" not found.")
         elif ans == "5":
-            fam = input("Which DGA family? ")
-            get_fam(fam)
-        elif ans == "6":
             for key in dga.keys():
                 print(key)
-        elif ans == "7" or ans == "quit" or ans == "exit":
+        elif ans == "6":
+            fam = input("Which DGA family? ")
+            get_fam(fam)
+        elif ans == "7":
+            fam = input("Which DGA family? ")
+            fam_domains(fam)
+        elif ans == "8":
+            fam = input("Which DGA family? ")
+            fam_dom_nsip(fam)
+        elif ans == "9" or ans == "quit" or ans == "exit":
             print("\n Goodbye")
             ans = False
         else:
