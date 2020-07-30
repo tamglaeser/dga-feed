@@ -7,4 +7,4 @@ I specifically listed out the C&C domain names in the [only_domain()](./c2_all_i
 
 In the [domains_nsips()](./c2_all_indicator.py#L25) function, I listed the C&C domains and the corresponding name server IPs so that one could see if the DNS had requests for those domains and could thereby locate the malware and let the owner of the computer know their computer has a virus AND/OR see who registered that domain name thereby finding the attacker.
 
-My other functions allow the user to retrieve specific information, such as all the information concerning a certain C&C server or a sertain DGA family.
+My program allows the user to filter this information as well for only a specific DGA family or C&C IP address.

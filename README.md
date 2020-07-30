@@ -1,7 +1,7 @@
 ## DGA Feeds
 
 A python program for pulling down and parsing the information from the Bambenek Consulting High-Confidence C2 All Indicator Feed found 
-[here](https://osint.bambenekconsulting.com/feeds/) in the top table. This is the master feed of all current known, active and non-sinkholed C&C domains using DGAs.
+[here](https://osint.bambenekconsulting.com/feeds/) in the top table; since the website is subject to change or withdraw permissions, I have copied the data to the c2-masterlist-high.txt file. This is the master feed of all current known, active and non-sinkholed C&C domains using DGAs.
 The data is structured in the following manner:
 - *domain*: the active non-sinkholed C&C domain that uses DGAs
 - *ip*: corresponding IP address
@@ -10,7 +10,7 @@ The data is structured in the following manner:
 - *description*
 - *manpage*
 
-The program is made up of several functions which can be called by a menu: 1 to list all the information, 2 to only list the domain names (to potentially block), 3 to list the domains and name server IPs (to potentially find malware and the attacker), 4 to list all the information of a certain C&C IP (to block that server specifically), and 5 to list all the information on the C&Cs of a specific DGA family; with this information, the domain names could be blacklisted and the malware and attacker potentially identified.
+The program is made up of several functions which can be called by the command line.
 
 #### Prerequisites
 
@@ -24,8 +24,10 @@ $ cd ./dga-feed
 ```
 
 #### Run Program 
+
+To see all options for running program, run
 ```
-$ python3 c2_all_indicator.py
+$ python3 c2_all_indicator.py -h
 ``` 
 
 #### Motivation
