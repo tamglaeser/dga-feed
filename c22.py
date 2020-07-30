@@ -1,7 +1,7 @@
 import urllib.request
 from urllib.error import HTTPError, URLError
 import sys
-import argparse
+import argparse, textwrap
 
 
 
@@ -50,7 +50,7 @@ def domains_nsips(dict, id=None):
     together = {}  # dictionary containing key C&C domain and value ns ips  # for memory
 
     if id is not None:
-        if isinstance(id, str):  #is dga fam
+        if id in dga:  #is dga fam
             for val in dict[id.lower()]:
                 if val[0] not in together.keys():
                     together[val[0]] = val[3]
@@ -73,7 +73,7 @@ def main(argv):
     complete = {}  # dictionary containing all information on page  # key=ip
     global dga
     dga = {}  # dictionary containing all information on page organized by dga fam
-    url = "https://osint.bambenekconsulting.com/feeds/c2-masterlist-high.txt"  # data page
+    url = "file:///home/tullia/projects/dga-feed/c2-masterlist-high.txt"  # data page
 
     try:
         file = urllib.request.urlopen(url)
@@ -111,51 +111,70 @@ def main(argv):
     # Command Line setup  # python3 c22.py --l  # python3 c22.py --c CHOICE --i ID  # python3 c22.py --c ID
     parser = argparse.ArgumentParser(description='A program to pull information about different C&C servers')
 
-    parser.add_argument("-l", "--list", action="store_true", help="Lists all possible DGA families")
-    parser.add_argument("-c", "--choice", choices=[1,2,3], type=int, help="denotes the user's choice of either\n"
-                                                               " - 1.Listing all information in the following format (ip: [domain, [nsname], [nsip], description, manpage]\n"
-                                                               " - 2.Listing only the C&C server domains\n"
-                                                               " - 3.Listing the C&C server domains and corresponding DNS IP addresses")
-    parser.add_argument("-i", "--id", help="represents which specific DGA family or C&C IP the user would like to learn about")
+    def required_length(nmin,nmax):
+        class RequiredLength(argparse.Action):
+            def __call__(self, parser, args, values, option_string=None):
+                if not nmin<=len(values)<=nmax:
+                    msg='argument "{f}" requires between {nmin} and {nmax} arguments'.format(
+                        f=self.dest,nmin=nmin,nmax=nmax)
+                    raise argparse.ArgumentTypeError(msg)
+                setattr(args, self.dest, values)
+        return RequiredLength
+
+    parser=argparse.ArgumentParser(description='program for listing information from C&C servers',
+                                   usage='use "python %(prog)s --help" for more information',
+                                   formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument("-d", "--dga", action="store_true", help="Lists all possible DGA families")
+    parser.add_argument('-l', "--list", nargs='+', action=required_length(1, 2), help=textwrap.dedent('''\
+    1st parameter -- options:
+        1 - to list all information in format (ip: [domain, [nsname], [nsip], description, manpage])
+        2 - to only list C&C server domains
+        3 - to list C&C server domains and corresponding DNS IPs
+    2nd parameter -- optional specification of which DGA family or a C&C server IP'''))
 
     args = parser.parse_args()
-    list = args.list
-    choice = args.choice
-    id = args.id
+    d = args.dga
+    l = args.list
 
-    if list:  # if --l  # to list all possible DGA fams
+
+    if d:  # if -d  # to list all possible DGA fams
         for key in dga.keys():
             print(key)
-    else:
-        if choice == 1:  # to pull all info
-            if id in dga.keys():  # if want specific DGA fam info
-                pull(dga, id)
-            elif id in complete.keys():  # if want specific IP info
-                pull(complete, id)
-            elif id == None:  # if want all info
+    else:  # if -l # to list info
+        if len(l) == 1:  # all info  # no specific ip or dga fam
+            l = l[0]
+            if l == '1':  # list all info
                 pull(complete)
-            else:  # user entered something wrong for id
-                print("ID not found. Please enter a valid DGA family or C&C IP.")
-        elif choice == 2:  # to list only domains
-            if id in dga.keys():
-                only_domain(dga, id)
-            elif id in complete.keys():
-                only_domain(complete, id)
-            elif id == None:
+            elif l == '2':  # only domains
                 only_domain(complete)
-            else:  # user entered something wrong for id
-                print("ID not found. Please enter a valid DGA family or C&C IP.")
-        elif choice == 3:  # to list domains and corresponding DNS IPs
-            if id in dga.keys():
-                domains_nsips(dga, id)
-            elif id in complete.keys():
-                domains_nsips(complete, id)
-            elif id == None:
+            elif l == '3':  # C&C domain and corresponding DNS IPs
                 domains_nsips(complete)
-            else:  # user entered something wrong for id
-                print("ID not found. Please enter a valid DGA family or C&C IP.")
-        else:  # didn't enter a CHOICE or --l
-            print("Please enter a choice. 1 for all information, 2 for only C&C domains, and 3 for C&C domains and DNS Ips")
+            else:
+                print("Not an available option. Please choose 1 to list all information, 2 for only the C&C domains, and 3 for C&C domains and corresponding DNS IPs")
+        elif len(l) == 2:  # specified DGA fam or C&C IP
+            if l[0] == '1':  # all info
+                if l[1].lower() in dga.keys():  # of specific DGA fam
+                    pull(dga, l[1].lower())
+                elif l[1] in complete.keys():  # of specific C&C IP
+                    pull(complete, l[1])
+                else:
+                    print("Your 2nd parameter neither specified a DGA family nor a C&C IP. Please enter either a correct value or nothing")
+            elif l[0] == '2':  # only C&C domains
+                if l[1].lower() in dga.keys():  # of specific dga fam
+                    only_domain(dga, l[1].lower())
+                elif l[1] in complete.keys():  # of specific C&C IP
+                    only_domain(complete, l[1])
+                else:
+                    print("Your 2nd parameter neither specified a DGA family nor a C&C IP. Please enter either a correct value or nothing")
+            elif l[0] == '3':  # C&C domain AND corresponding DNS IPs
+                if l[1].lower() in dga.keys():  # of specific DGA fam
+                    domains_nsips(dga, l[1].lower())
+                elif l[1] in complete.keys():  # of specific C&C IP
+                    domains_nsips(complete, l[1])
+                else:
+                    print("Your 2nd parameter neither specified a DGA family nor a C&C IP. Please enter either a correct value or nothing")
+        else:
+            print("Too many parameters. Please input a maximum of 2 parameters, the 1st being your choice of what information to output and your 2nd the optional filter of DGA family or C&C IP")
 
 
 if __name__ == '__main__':  # to easily run main from terminal
